@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:showDividers="middle"
+    android:divider="?android:dividerVertical"
+    android:dividerPadding="12dp">
+
+    <ImageButton
+        style="?android:actionButtonStyle"
+        android:id="@+id/actionbar_done"
+        android:background="@drawable/white_selectable_item_background"
+        android:layout_width="wrap_content"
+        android:src="@drawable/ic_action_done"
+        android:contentDescription="@string/done"
+        android:layout_height="match_parent" />
+
+    <com.flavienlaurent.muzei.hash.ui.AlegrevaTextView
+        android:id="@+id/title"
+        android:textSize="26sp"
+        android:layout_marginLeft="10dp"
+        android:gravity="center_vertical"
+        android:textColor="@android:color/white"
+        android:layout_width="wrap_content"
+        style="@style/HashTextView"
+        android:layout_height="match_parent"
+        android:text="@string/title_settings" />
+
+</LinearLayout>

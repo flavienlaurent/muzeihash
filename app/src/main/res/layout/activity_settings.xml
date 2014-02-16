@@ -1,53 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="72dp"
+    android:paddingBottom="48dp">
 
-    <LinearLayout
+    <EditText
+        android:layout_margin="15dp"
+        android:id="@+id/hashtag"
+        android:singleLine="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F0F0F0"
-        android:orientation="horizontal"
-        android:padding="15dp">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-condensed"
-                android:text="Hashtag filter:"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/hashtag"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="#hashtag" />
-
-        </LinearLayout>
-
-        <ImageButton
-            android:src="@drawable/ic_add"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/selector_button"
-            android:id="@+id/add"
-            android:layout_width="48dp"
-            android:layout_height="48dp" />
-
-    </LinearLayout>
+        android:textColorHint="#30FFFFFF"
+        android:textColor="@android:color/white"
+        android:textCursorDrawable="@null"
+        android:hint="#hashtag" />
 
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:listitem="@layout/listitem_tag" />
+
+    <com.flavienlaurent.muzei.hash.ui.AlegrevaTextView
+        android:id="@+id/empty"
+        tools:visibility="gone"
+        android:background="@drawable/white_selectable_item_background"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:textColor="@android:color/white"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textSize="22sp"
+        android:text="@string/no_hashtag"
+        android:gravity="center" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/config_freq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:padding="10dp"
+            android:background="@drawable/white_selectable_item_background"
+            android:textColor="@android:color/white"
+            android:fontFamily="sans-serif-thin"
+            android:drawablePadding="10dp"
+            android:drawableLeft="@drawable/ic_config_freq"
+            android:gravity="center_vertical"
+            android:text="@string/config_every" />
+
+        <TextView
+            android:id="@+id/config_connection"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:background="@drawable/white_selectable_item_background"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:fontFamily="sans-serif-thin"
+            android:text="@string/config_connection_wifi" />
+    </LinearLayout>
+
 
 </LinearLayout>

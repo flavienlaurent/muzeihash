@@ -19,8 +19,8 @@ android {
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 19
-        versionCode 1
-        versionName "1.0"
+        versionCode 101
+        versionName "1.0.1"
     }
 
 
@@ -43,5 +43,7 @@ android {
 
 dependencies {
     compile 'com.squareup.retrofit:retrofit:1.4.1'
+    compile 'com.nhaarman.listviewanimations:library:2.5.2'
     compile 'com.google.android.apps.muzei:muzei-api:+'
+    compile 'com.doomonafireball.betterpickers:library:1.5.2'
 }

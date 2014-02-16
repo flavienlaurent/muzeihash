@@ -31,7 +31,8 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_settings"
-            android:theme="@android:style/Theme.Holo.Light.DarkActionBar"
+            android:windowSoftInputMode="adjustNothing"
+            android:theme="@style/Theme.Hash.Settings"
             android:exported="true">
         </activity>
     </application>

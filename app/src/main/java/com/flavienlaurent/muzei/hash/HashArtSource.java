@@ -22,13 +22,22 @@ public class HashArtSource extends RemoteMuzeiArtSource {
     private static final String TAG = "HashArtSource";
     private static final String SOURCE_NAME = "HashArtSource";
 
-    private static final int ROTATE_TIME_MILLIS = 3 * 60 * 60 * 1000; // rotate every 3 hours
-
     private GooglePlusService mGooglePlusService;
     private List<GooglePlusService.Item> mItems;
 
     public HashArtSource() {
         super(SOURCE_NAME);
+    }
+
+    private int getRotateTimeMillis() {
+        return PreferenceHelper.getConfigFreq(this);
+    }
+
+    private boolean isConnectedAsPreferred() {
+        if(PreferenceHelper.getConfigConnection(this) == PreferenceHelper.CONNECTION_WIFI) {
+            return Utils.isWifiConnected(this);
+        }
+        return true;
     }
 
     @Override
@@ -45,7 +54,7 @@ public class HashArtSource extends RemoteMuzeiArtSource {
                         if (retrofitError.isNetworkError() || (500 <= statusCode && statusCode < 600)) {
                             return new RetryException();
                         }
-                        scheduleUpdate(System.currentTimeMillis() + ROTATE_TIME_MILLIS);
+                        scheduleUpdate(System.currentTimeMillis() + getRotateTimeMillis());
                         return retrofitError;
                     }
                 })
@@ -56,12 +65,17 @@ public class HashArtSource extends RemoteMuzeiArtSource {
 
     @Override
     protected void onTryUpdate(int reason) throws RetryException {
+        if (!isConnectedAsPreferred()) {
+            scheduleUpdate(System.currentTimeMillis() + getRotateTimeMillis());
+            return;
+        }
+
         String currentToken = (getCurrentArtwork() != null) ? getCurrentArtwork().getToken() : null;
 
         List<String> hashtags = PreferenceHelper.tagsFromPref(getApplicationContext());
         if(hashtags.isEmpty()) {
             Log.w(TAG, "no hashtags.");
-            scheduleUpdate(System.currentTimeMillis() + ROTATE_TIME_MILLIS);
+            scheduleUpdate(System.currentTimeMillis() + getRotateTimeMillis());
             return;
         }
 
@@ -88,7 +102,7 @@ public class HashArtSource extends RemoteMuzeiArtSource {
 
         if (mItems.isEmpty()) {
             Log.w(TAG, "no photos returned from API.");
-            scheduleUpdate(System.currentTimeMillis() + ROTATE_TIME_MILLIS);
+            scheduleUpdate(System.currentTimeMillis() + getRotateTimeMillis());
             return;
         }
 
@@ -142,7 +156,7 @@ public class HashArtSource extends RemoteMuzeiArtSource {
                 .viewIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(viewIntentUrl)))
                 .build());
 
-        scheduleUpdate(System.currentTimeMillis() + ROTATE_TIME_MILLIS);
+        scheduleUpdate(System.currentTimeMillis() + getRotateTimeMillis());
     }
 
     private void filterItems() {
