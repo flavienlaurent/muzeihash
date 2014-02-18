@@ -92,7 +92,7 @@
         <ImageButton
             android:id="@+id/delete"
             android:layout_width="0dip"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:gravity="center"
             android:layout_gravity="center"
             android:src="@drawable/ic_backspace_dark"
