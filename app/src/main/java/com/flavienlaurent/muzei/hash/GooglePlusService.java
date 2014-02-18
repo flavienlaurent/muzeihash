@@ -21,11 +21,13 @@ public interface GooglePlusService {
     static class Item {
         Actor actor;
         Object object;
+        String url;
 
         @Override
         public String toString() {
             return "Item{" +
                     "actor=" + actor +
+                    ", url=" + url +
                     ", object=" + object +
                     '}';
         }
@@ -33,7 +35,6 @@ public interface GooglePlusService {
 
     static class Object {
         Actor actor;
-        String url;
         String title;
         List<Attachment> attachments;
 
@@ -41,8 +42,7 @@ public interface GooglePlusService {
         public String toString() {
             return "Object{" +
                     "actor=" + actor +
-                    "url=" + url +
-                    "title=" + title +
+                    ", title=" + title +
                     ", attachments=" + attachments +
                     '}';
         }

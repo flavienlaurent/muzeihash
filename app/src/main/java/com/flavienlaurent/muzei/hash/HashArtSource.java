@@ -121,7 +121,7 @@ public class HashArtSource extends RemoteMuzeiArtSource {
 
         String author = item.object.actor == null ? null : item.object.actor.displayName;
         String displayName = attachment.displayName;
-        String viewIntentUrl = item.object.url;
+        String viewIntentUrl = item.url;
 
         //author
         if(TextUtils.isEmpty(author)) {
@@ -146,7 +146,7 @@ public class HashArtSource extends RemoteMuzeiArtSource {
             author = "...";
         }
 
-        Log.i(TAG, "artwork: " + displayName + "," + attachment.fullImage.url);
+        Log.i(TAG, "artwork: " + displayName + ",fullImage:" + attachment.fullImage.url + ",viewUrl:" + viewIntentUrl);
 
         publishArtwork(new Artwork.Builder()
                 .title(displayName)

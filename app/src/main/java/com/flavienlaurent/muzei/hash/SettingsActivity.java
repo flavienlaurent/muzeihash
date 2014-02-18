@@ -29,6 +29,8 @@ import android.widget.Toast;
 
 import com.doomonafireball.betterpickers.hmspicker.HmsPickerBuilder;
 import com.doomonafireball.betterpickers.hmspicker.HmsPickerDialogFragment;
+import com.flavienlaurent.muzei.hash.ui.hhmmpicker.HHmsPickerBuilder;
+import com.flavienlaurent.muzei.hash.ui.hhmmpicker.HHmsPickerDialogFragment;
 import com.haarman.listviewanimations.itemmanipulation.OnDismissCallback;
 import com.haarman.listviewanimations.itemmanipulation.SwipeDismissAdapter;
 
@@ -36,7 +38,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SettingsActivity extends FragmentActivity implements OnDismissCallback, HmsPickerDialogFragment.HmsPickerDialogHandler {
+public class SettingsActivity extends FragmentActivity implements OnDismissCallback, HHmsPickerDialogFragment.HHmsPickerDialogHandler {
 
     private static final String TAG = "SettingsActivity";
 
@@ -45,6 +47,7 @@ public class SettingsActivity extends FragmentActivity implements OnDismissCallb
     private View mEmpty;
     private TextView mConfigConnection;
     private TextView mConfigFreq;
+    private View mAdd;
 
     private HashTagAdapter mHashTagAdapter;
     private String mLastHashTag;
@@ -63,13 +66,23 @@ public class SettingsActivity extends FragmentActivity implements OnDismissCallb
         mEmpty = findViewById(R.id.empty);
         mConfigConnection = (TextView) findViewById(R.id.config_connection);
         mConfigFreq = (TextView) findViewById(R.id.config_freq);
+        mAdd = findViewById(R.id.add);
 
         setupList();
         setupHashTagEditText();
         setupConfig();
 
         mEmpty.setOnClickListener(mOnEmptyClickListener);
+
+        mAdd.setOnClickListener(mOnAddClickListener);
     }
+
+    private final View.OnClickListener mOnAddClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            addHashTag();
+        }
+    };
 
     private void setupConfig() {
         mConfigFreq.setOnClickListener(mOnConfigFreqClickListener);
@@ -99,7 +112,7 @@ public class SettingsActivity extends FragmentActivity implements OnDismissCallb
     private View.OnClickListener mOnConfigFreqClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            HmsPickerBuilder hpb = new HmsPickerBuilder()
+            HHmsPickerBuilder hpb = new HHmsPickerBuilder()
                     .setFragmentManager(getSupportFragmentManager())
                     .setStyleResId(R.style.BetterPickersDialogFragment);
             hpb.show();
