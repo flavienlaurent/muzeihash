@@ -124,6 +124,11 @@ public class SettingsActivity extends FragmentActivity implements OnDismissCallb
         int duration = hours * 3600000 + minutes * 60000 + seconds * 1000;
         PreferenceHelper.setConfigFreq(this, duration);
         updateConfigFreq();
+
+        // Send an intent to communicate the update with the service
+        Intent intent = new Intent(this, HashArtSource.class);
+        intent.putExtra("configFreq", duration);
+        startService(intent);
     }
 
     private View.OnClickListener mOnConfigConnectionClickListener = new View.OnClickListener() {
