@@ -183,4 +183,15 @@ public class HashArtSource extends RemoteMuzeiArtSource {
         }
         return true;
     }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        // Don't remove this, calls MuzeiArtSource implementation
+        super.onHandleIntent(intent);
+
+        if (intent.getExtras().containsKey("configFreq")) {
+            // getRotateTimeMillis already have the correct updated value
+            scheduleUpdate(System.currentTimeMillis() + getRotateTimeMillis());
+        }
+    }
 }
