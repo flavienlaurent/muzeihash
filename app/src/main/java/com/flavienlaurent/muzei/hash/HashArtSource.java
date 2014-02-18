@@ -61,6 +61,7 @@ public class HashArtSource extends RemoteMuzeiArtSource {
                 .build();
         mGooglePlusService = restAdapter.create(GooglePlusService.class);
         mItems = new ArrayList<GooglePlusService.Item>();
+        PreferenceHelper.limitConfigFreq(this);
     }
 
     @Override
@@ -182,16 +183,5 @@ public class HashArtSource extends RemoteMuzeiArtSource {
             return false;
         }
         return true;
-    }
-
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        // Don't remove this, calls MuzeiArtSource implementation
-        super.onHandleIntent(intent);
-
-        if (intent.getExtras().containsKey("configFreq")) {
-            // getRotateTimeMillis already have the correct updated value
-            scheduleUpdate(System.currentTimeMillis() + getRotateTimeMillis());
-        }
     }
 }

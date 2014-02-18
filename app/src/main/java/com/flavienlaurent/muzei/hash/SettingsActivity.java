@@ -27,8 +27,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.doomonafireball.betterpickers.hmspicker.HmsPickerBuilder;
-import com.doomonafireball.betterpickers.hmspicker.HmsPickerDialogFragment;
 import com.flavienlaurent.muzei.hash.ui.hhmmpicker.HHmsPickerBuilder;
 import com.flavienlaurent.muzei.hash.ui.hhmmpicker.HHmsPickerDialogFragment;
 import com.haarman.listviewanimations.itemmanipulation.OnDismissCallback;
@@ -57,6 +55,9 @@ public class SettingsActivity extends FragmentActivity implements OnDismissCallb
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        PreferenceHelper.limitConfigFreq(this);
+
         setContentView(R.layout.activity_settings);
 
         setupActionBar();
@@ -93,7 +94,12 @@ public class SettingsActivity extends FragmentActivity implements OnDismissCallb
     }
 
     private void updateConfigFreq() {
-        mConfigFreq.setText(getString(R.string.config_every, Utils.convertDurationtoString(PreferenceHelper.getConfigFreq(this))));
+        int configFreq = PreferenceHelper.getConfigFreq(this);
+        mConfigFreq.setText(getString(R.string.config_every, Utils.convertDurationtoString(configFreq)));
+        // Send an intent to communicate the update with the service
+        Intent intent = new Intent(this, HashArtSource.class);
+        intent.putExtra("configFreq", configFreq);
+        startService(intent);
     }
 
     private void updateConfigConnection() {
@@ -122,13 +128,12 @@ public class SettingsActivity extends FragmentActivity implements OnDismissCallb
     @Override
     public void onDialogHmsSet(int reference, int hours, int minutes, int seconds) {
         int duration = hours * 3600000 + minutes * 60000 + seconds * 1000;
-        PreferenceHelper.setConfigFreq(this, duration);
-        updateConfigFreq();
-
-        // Send an intent to communicate the update with the service
-        Intent intent = new Intent(this, HashArtSource.class);
-        intent.putExtra("configFreq", duration);
-        startService(intent);
+        if(duration >= PreferenceHelper.MIN_FREQ_MILLIS) {
+            PreferenceHelper.setConfigFreq(this, duration);
+            updateConfigFreq();
+        } else {
+            Toast.makeText(this, "Minimum refresh rate is 3h (G+ quota)", Toast.LENGTH_LONG).show();
+        }
     }
 
     private View.OnClickListener mOnConfigConnectionClickListener = new View.OnClickListener() {

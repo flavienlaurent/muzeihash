@@ -18,7 +18,9 @@ public class PreferenceHelper {
     public static final int CONNECTION_WIFI = 0;
     public static final int CONNECTION_ALL = 1;
 
-    private static final int DEFAULT_FREQ_MILLIS = 3 * 60 * 60 * 1000;
+    public static final int MIN_FREQ_MILLIS = 3 * 60 * 60 * 1000;
+
+    private static final int DEFAULT_FREQ_MILLIS = 24 * 60 * 60 * 1000;
 
     public static int getConfigConnection(Context context) {
         SharedPreferences preferences = getPreferences(context);
@@ -38,6 +40,13 @@ public class PreferenceHelper {
     public static int getConfigFreq(Context context) {
         SharedPreferences preferences = getPreferences(context);
         return preferences.getInt("config_freq", DEFAULT_FREQ_MILLIS);
+    }
+
+    public static void limitConfigFreq(Context context) {
+        int configFreq = getConfigFreq(context);
+        if(configFreq < MIN_FREQ_MILLIS) {
+            setConfigFreq(context, MIN_FREQ_MILLIS);
+        }
     }
 
     public static List<String> tagsFromPref(Context context) {
