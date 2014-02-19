@@ -16,6 +16,7 @@ import java.util.Random;
 import retrofit.ErrorHandler;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class HashArtSource extends RemoteMuzeiArtSource {
 
@@ -50,10 +51,10 @@ public class HashArtSource extends RemoteMuzeiArtSource {
                 .setErrorHandler(new ErrorHandler() {
                     @Override
                     public Throwable handleError(RetrofitError retrofitError) {
-                        int statusCode = retrofitError.getResponse().getStatus();
-                        if (retrofitError.isNetworkError() || (500 <= statusCode && statusCode < 600)) {
+                        /*Response response = retrofitError.getResponse();
+                        if (response == null || retrofitError.isNetworkError() || (500 <= response.getStatus() && response.getStatus() < 600)) {
                             return new RetryException();
-                        }
+                        }*/
                         scheduleUpdate(System.currentTimeMillis() + getRotateTimeMillis());
                         return retrofitError;
                     }
@@ -103,8 +104,10 @@ public class HashArtSource extends RemoteMuzeiArtSource {
 
         if (mItems.isEmpty()) {
             Log.w(TAG, "no photos returned from API.");
-            scheduleUpdate(System.currentTimeMillis() + getRotateTimeMillis());
-            return;
+            /*scheduleUpdate(System.currentTimeMillis() + getRotateTimeMillis());
+            return;*/
+
+            throw new RetryException();
         }
 
         Random random = new Random();
